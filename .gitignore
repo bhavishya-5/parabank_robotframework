@@ -1,0 +1,8 @@
+.venv/
+venv/
+reports/
+reports/pabot_results/
+output/
+output/allure/
+.pabotsuitenames
+pabot_manager.log
