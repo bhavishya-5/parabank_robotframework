@@ -69,8 +69,5 @@ pipeline {
             junit testResults: "${RESULTS_DIR}/xunit.xml", allowEmptyResults: true
             archiveArtifacts artifacts: "${RESULTS_DIR}/**", allowEmptyArchive: true, fingerprint: true
         }
-        cleanup {
-            cleanWs()
-        }
     }
 }
