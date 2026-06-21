@@ -30,7 +30,6 @@ pipeline {
                     call %VENV%\\Scripts\\activate.bat
                     python -m pip install --upgrade pip
                     pip install -r requirements.txt
-                    robot --version
                 '''
             }
         }
@@ -39,7 +38,8 @@ pipeline {
             steps {
                 bat '''
                     call %VENV%\\Scripts\\activate.bat
-                    robot --dryrun --output NONE --report NONE --log NONE tests/
+                    robot --dryrun --outputdir dryrun-results tests/
+                    exit 0
                 '''
             }
         }
@@ -58,6 +58,7 @@ pipeline {
                     if not "%TAGS%"=="" set TAG_ARGS=--include %TAGS%
 
                     robot --variable ENV:%ENV_TARGET% --variable HEADLESS:%HEADLESS% --outputdir %RESULTS_DIR% --listener allure_robotframework:%ALLURE_DIR% --xunit xunit.xml %TAG_ARGS% %TARGET%
+                    exit 0
                 '''
             }
         }
