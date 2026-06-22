@@ -1,5 +1,6 @@
 *** Settings ***
 Library  SeleniumLibrary
+Library    Easter
 Resource  ../../resources/keywords/common_keywords.robot
 Resource  ../../resources/pages/LoginPage.robot
 Resource  ../../resources/pages/TransferFundsPage.robot
@@ -12,7 +13,7 @@ Test Teardown  Close Application
 *** Test Cases ***
 Transfer Funds Between Accounts
         [Documentation]  Transfer funds between accounts
-        [Tags]    ui    smoke    regression    transfer    positive    FR-01
+        [Tags]    ui    smoke    regression    transfer    positive
         Login the user    ${username}    ${password}
         Transfer Funds    100    0  1
         Wait Until Element Is Visible    ${TRANSFER_FUNDS_SUCCESS_MESSAGE}
@@ -20,7 +21,7 @@ Transfer Funds Between Accounts
 
 Transfer Funds Validation
         [Documentation]  Validate transfer funds functionality
-        [Tags]    ui    regression    transfer    positive    FR-01
+        [Tags]    ui    regression    transfer    positive
         Login the user    ${username}    ${password}
         Transfer Funds    100    0  1
         Wait Until Element Is Visible    ${TRANSFER_FUNDS_SUCCESS_MESSAGE}
@@ -28,7 +29,7 @@ Transfer Funds Validation
 
 Verify Transfer Funds Amount and Accounts
         [Documentation]  Verify transfer funds amount and accounts
-        [Tags]    ui    regression    transfer    positive    FR-01
+        [Tags]    ui    regression    transfer    positive
         Login the user    ${username}    ${password}
         Open Transfer Funds Page
         Enter Transfer Amount    100
@@ -50,7 +51,7 @@ Verify Transfer Funds Amount and Accounts
 
 Transfer Funds Without Amount
         [Documentation]  Validate transfer funds without amount
-        [Tags]    ui    regression    transfer    negative    FR-01
+        [Tags]    ui    regression    transfer    negative
         Login the user    ${username}    ${password}
         Open Transfer Funds Page
         Select From Account    0
@@ -58,4 +59,48 @@ Transfer Funds Without Amount
         Click Transfer Button
         Wait Until Element Is Visible    ${ERROR_MESSAGE}
         Page Should Contain Element    ${ERROR_MESSAGE}
+
+
+Transfer funds to self account
+        [Documentation]  Validate transfer funds to self account
+        [Tags]    ui    regression    transfer    negative
+        Login the user    ${username}    ${password}
+        Open Transfer Funds Page
+        Enter Transfer Amount    100
+        Select From Account    0
+        select To Account    0
+        Click Transfer Button
+        Log To Console    ${TRANSFER_FUNDS_SUCCESS_MESSAGE}
+
+Opening transfer page without login
+        [Documentation]  Validate opening transfer page without login
+        [Tags]    ui    regression    transfer    negative
+        [Setup]   None
+        Open Browser    ${BASE_URL}/transfer.htm    ${BROWSER}
+        Close Browser
+
+Transfer amount greater than 2 decimal places
+        [Documentation]  Validate transfer amount greater than 2 decimal places
+        [Tags]    ui    regression    transfer    negative
+        Login the user    ${username}    ${password}
+        Open Transfer Funds Page
+        Enter Transfer Amount    100.123
+        Select From Account    0
+        select To Account    1
+        Click Transfer Button
+        Wait Until Element Is Visible    ${ERROR_MESSAGE}
+        Page Should Contain Element    ${ERROR_MESSAGE}
+
+Transfer -ve amount
+        [Documentation]  Validate transfer -ve amount
+        [Tags]    ui    regression    transfer    negative
+        Login the user    ${username}    ${password}
+        Open Transfer Funds Page
+        Enter Transfer Amount    -100
+        Select From Account    0
+        select To Account    1
+        Click Transfer Button
+        Wait Until Element Is Visible    ${ERROR_MESSAGE}
+        Page Should Contain Element    ${ERROR_MESSAGE}
+
 

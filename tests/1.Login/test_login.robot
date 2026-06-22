@@ -47,3 +47,22 @@ TC-004 Login with Invalid Credentials
         click login button
         Wait Until Element Is Visible    ${LOGIN_ERROR_MESSAGE}
         Page Should Contain Element    ${LOGIN_ERROR_MESSAGE}
+
+TC-019 Register with invalid mobile number
+        [Documentation]  registering with invalid mobile number
+        open Register Page
+        ${customer}=  Create Dictionary
+    ...    first_name=John
+    ...    last_name=Doe
+    ...    address=4521 Oak Ave
+    ...    city=Springfield
+    ...    state=CA
+    ...    zip_code=90001
+    ...    phone=abcdefgh
+    ...    ssn=123-45-6789
+    ...    username=${username}
+    ...    password=${password}
+
+    Fill the fields    ${customer}
+    Click Register Button
+    Page Should Not Contain    ${REGISTER_SUCCESS_MESSAGE}
